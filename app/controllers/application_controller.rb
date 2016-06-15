@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   after_filter :store_location
 
   # Customize Devise to send signed out users to the home page not root
+  # some additional comment
   def after_sign_out_path_for(resource_or_scope)
     home_path(:ref => "logout")
   end
