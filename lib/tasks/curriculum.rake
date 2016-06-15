@@ -2,9 +2,9 @@ namespace :curriculum do
 
   desc "Grab Latest Lesson Content from Github"
   task :update_content => :environment do
-    puts "Updating the curriculum..."
+    # puts "Updating the curriculum..."
 
-    puts "Creating Github link..."
+    # puts "Creating Github link..."
 
     github = Github.new do |g|
       g.user        = "theodinproject"
@@ -14,9 +14,9 @@ namespace :curriculum do
 
     lessons = Lesson.all
     count = lessons.count
-    puts "Cycling through #{count} lessons...\n\n\n"
+    # puts "Cycling through #{count} lessons...\n\n\n"
     lessons.each_with_index do |lesson,i|
-      puts "Retrieving Lesson #{i+1}/#{count}: #{lesson.title}"
+      # puts "Retrieving Lesson #{i+1}/#{count}: #{lesson.title}"
       response = github.repos.contents.get :path => lesson.url
       # Decode the gibberish into a real file and render to html
       decoded_file = Base64.decode64(response["content"])
@@ -24,29 +24,30 @@ namespace :curriculum do
       if decoded_file
         snippet_end = decoded_file.index("\n")-1 || 03
         if lesson.content == decoded_file
-          puts "    ...No new content."
+          # puts "    ...No new content."
         else
-          puts "    Adding content: \"#{decoded_file[0..snippet_end]}\""
+          # puts "    Adding content: \"#{decoded_file[0..snippet_end]}\""
           lesson.content = decoded_file
           lesson.save!
           # puts "Added content to the lesson..."
         end
-        puts
+        # puts
       else
-        puts "\n\n\n\n\n\n FAILED TO ADD CONTENT TO THE LESSON!!!\n\n\n\n\n\n"
+        # puts "\n\n\n\n\n\n FAILED TO ADD CONTENT TO THE LESSON!!!\n\n\n\n\n\n"
         raise "Failed to add content to the lesson (tried to add `nil`)!"
       end
     end
 
     puts "\nChecking for any nils or blanks in the database"
     Lesson.all.each do |l|
-      print "."
+      # print "."
       raise "Nil lesson content error! Lesson was #{l.title}." if l.content.nil?
       raise "Blank lesson content error! Lesson was #{l.title}." if l.content.blank?
     end
-    puts "\n...All lessons appear to have content."
-    puts "...so we're ALL DONE! Updated the curriculum."
+    # puts "\n...All lessons appear to have content."
+    # puts "...so we're ALL DONE! Updated the curriculum."
   end
+<<<<<<< HEAD
 
   desc "Using multi threading to grab content from https://github.com/TheOdinProject/curriculum"
   task :update_content_dev => :environment do
@@ -81,3 +82,6 @@ namespace :curriculum do
     puts "\nDone..."
   end
 end
+=======
+end
+>>>>>>> upstream/implement_progress_tracking

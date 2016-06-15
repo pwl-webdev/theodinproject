@@ -49,6 +49,7 @@ class User < ActiveRecord::Base
    t = self.lesson_completions.where("lesson_id = %s ", lesson.id ).limit(1)
     t.first["created_at"]
   end
+
   def latest_lesson_completion
     self.lesson_completions.order(:created_at => :desc).first
   end
@@ -130,8 +131,7 @@ class User < ActiveRecord::Base
         @token = token
         UserMailer.send_welcome_email_to(self, token).deliver_now!
       rescue Exception => e
-        puts "Error sending welcome email!"
-        puts e.message
+        logger.debug "Email Error: #{e.message}"
       end
     end
 end

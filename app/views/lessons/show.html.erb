@@ -44,6 +44,7 @@
     <% if @lower_banner_ad %>
       <%= render :partial => "lower_banner_ad", :locals => { :ad => @lower_banner_ad } %>
     <% end %>
+    <%= render 'lessons/progress_widget' %>
 
     <div id="info-box">
       <%= render 'shared/social_sharing_buttons' %>

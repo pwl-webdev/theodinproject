@@ -1,0 +1,19 @@
+<div class="progress_widget">
+	<div class="progress_row" data-toggle="tooltip" title="Number of students who have completed this lesson">
+		<div class="progress_widget_icon completed">
+			<i class="fa fa-check"></i>
+		</div>
+		<div class="progress_widget_number">
+			<%= @lesson.completed_students_count %>
+		</div>
+	</div>
+
+	<div class="progress_row current" data-toggle="tooltip" title="Number of students currently on this lesson">
+		<div class="progress_widget_icon">
+			<i class="fa fa-users"></i>
+		</div>
+		<div class="progress_widget_number">
+			3000
+		</div>
+	</div>
+</div>

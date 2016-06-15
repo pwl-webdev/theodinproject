@@ -2,7 +2,7 @@ FactoryGirl.define do
 
   factory :user, :aliases => [:creator] do
     before(:create) do |user|
-      user.stub(:send_welcome_email)
+      allow(user).to receive(:send_welcome_email).and_return(user)
     end
     sequence :username do |n|
       "foobar#{n}"
@@ -41,6 +41,12 @@ FactoryGirl.define do
     title_url { title.parameterize }
     association :section
     content "content"
+  end
+
+
+  factory :lesson_completion do
+    student_id 1
+    lesson_id 1
   end
 
   factory :section do

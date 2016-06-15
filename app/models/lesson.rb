@@ -15,6 +15,7 @@ class Lesson < ActiveRecord::Base
     find_lesson.prev_lesson
   end
 
+<<<<<<< HEAD
   def position_in_section
     section_lessons.where(
       "is_project = ? AND position <= ?", false, position
@@ -29,5 +30,13 @@ class Lesson < ActiveRecord::Base
 
   def find_lesson
     FindLesson.new(self)
+=======
+  def completed_students_count
+    self.lesson_completions.count
+  end
+
+  def current_students_count
+    #to do
+>>>>>>> upstream/implement_progress_tracking
   end
 end

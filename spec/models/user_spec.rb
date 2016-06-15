@@ -4,12 +4,12 @@ require 'spec_helper'
 
 describe User do
 
-
-  subject(:user) { User.new(
-                            :username => "foobar",
-                            :email => "foo@bar.com",
-                            :password => "foobar",
-                            :legal_agreement => "true" )}
+  subject(:user) {
+    User.new( :username => "foobar",
+              :email => "foo@bar.com",
+              :password => "foobar",
+              :legal_agreement => "true" )
+  }
 
   before(:each) do
     allow(subject).to receive(:send_welcome_email)
@@ -36,6 +36,10 @@ describe User do
   it { is_expected.to respond_to(:completed_lessons) }
 
   it { is_expected.to be_valid }
+
+  it "shouldn't yet have any completed lessons" do
+    expect(subject.completed_lessons).to be_empty
+  end
 
   context "with all fields filled in" do
     before do
@@ -91,10 +95,6 @@ describe User do
     it { is_expected.not_to be_valid }
   end
 
-  it "shouldn't yet have any completed lessons" do
-    expect(subject.completed_lessons).to be_empty
-  end
-
   context "when legal_agreement is blank" do
     before do
       subject.legal_agreement = ""
@@ -103,7 +103,6 @@ describe User do
   end
 
   describe "when saving" do
-
     it "should call to build preferences" do
       expect(subject).to receive(:build_preferences)
       subject.save
@@ -128,49 +127,30 @@ describe User do
     describe "#completed_lesson?" do
 
       context "for a lesson that has been completed" do
+        let(:completed_lesson) { FactoryGirl.create(:lesson) }
+        let(:lesson_completion) { FactoryGirl.create(:lesson_completion, student_id: user.id, lesson_id: completed_lesson.id) }
 
-        it "should return true" do
-          completed_lesson = double("Lesson")
-          allow(user).to receive(:completed_lessons).and_return([completed_lesson])
+        before do
+          lesson_completion.save
+        end
+
+        specify "when checking to see if a user has completed a lesson" do
           expect(user.completed_lesson?(completed_lesson)).to be_truthy
         end
 
+        it "should return the latest completed lesson" do
+          expect(completed_lesson.id).to eq user.latest_lesson_completion.lesson_id
+        end
       end
 
       context "for a lesson that has not been completed" do
-
         it "should return false" do
           uncompleted_lesson = double("Lesson")
-          completed_lesson = double("Lesson")
-          allow(user).to receive(:completed_lessons).and_return([completed_lesson])
           expect(user.completed_lesson?(uncompleted_lesson)).to be_falsey
         end
-
       end
 
     end
-
-    describe "#latest_completed_lesson" do
-
-      context "for a user with two completed lessons" do
-
-        it "should return the latest lesson" do
-          # ??? Is there a good way to actually test this method???
-
-          # completed_lesson_early = double("Lesson")
-          # completed_lesson_late = double("Lesson")
-          # completed_time = Time.now
-          # allow(completed_lesson_early).to receive(:created_at).and_return(completed_time)
-          # allow(completed_lesson_late).to receive(:created_at).and_return(completed_time + 1.minute)
-          # allow(user).to receive(:completed_lessons).and_return([completed_lesson_early, completed_lesson_late])
-          # puts user.completed_lessons
-          # expect(user.latest_completed_lesson).to be(completed_lesson_early)
-
-        end
-      end
-
-    end
-
   end
 
 
