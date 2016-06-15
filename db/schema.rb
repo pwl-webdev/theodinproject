@@ -138,6 +138,7 @@ ActiveRecord::Schema.define(version: 20140505013220) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "username"
+    #some comment inside
     t.text     "about"
     t.string   "github"
     t.string   "twitter"

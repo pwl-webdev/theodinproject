@@ -49,3 +49,5 @@ group :development do
   gem 'letter_opener',              '~> 1.4.1'                        # shows outgoing emails in your browser instead
   gem 'derailed'                                                      # Memory benchmarking
 end
+
+# Added some comments just for test_feature
