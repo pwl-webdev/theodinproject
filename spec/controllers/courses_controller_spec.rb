@@ -32,6 +32,7 @@ describe CoursesController do
     end
   end
 
+#comment in spec
   context "requesting the lessons index for a course" do
 
     # courses/:course_name/lessons

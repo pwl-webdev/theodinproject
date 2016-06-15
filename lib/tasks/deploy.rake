@@ -85,6 +85,8 @@ namespace :deploy do
       puts `git tag -a #{previous_release} -m 'Tagged release'`
       puts `git push --tags git@heroku.com:#{APP}.git`
       
+      #Some comment in the middle
+
       puts "Turning local repo checked out on master ..."
       puts `git checkout master`
       puts 'All done!'
